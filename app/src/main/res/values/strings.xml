@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Application Manager</string>
+    <string name="title_activity_main">Application manager</string>
+    <string name="agency_fragment_title">Agency</string>
+    <string name="title_activity_add_agency">Add agency</string>
+    <string name="save">Save</string>
+    <string name="agency_name">Agency name</string>
+    <string name="agency_saved">Agency %1$s saved successfully</string>
+    <string name="error_saving_agency">Error saving agency</string>
+    <string name="edit">Edit</string>
+    <string name="title_activity_add_agent">AddAgentActivity</string>
+    <string name="agent_saved">Agent $1%s saved</string>
+    <string name="error_saving_agent">Error saving agent</string>
+    <string name="agent_name">Name</string>
+    <string name="agent_last_contact">Last contact</string>
+</resources>

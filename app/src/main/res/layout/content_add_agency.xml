@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="agency" type="de.knerd.applicationmanager.models.AgencyModel"/>
+    </data>
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:showIn="@layout/activity_add_agency"
+            tools:context="de.knerd.applicationmanager.activities.AddAgencyActivity"
+            android:orientation="vertical"
+            android:layout_margin="16dp">
+        <android.support.design.widget.TextInputLayout android:layout_height="match_parent"
+                                                       android:layout_width="match_parent">
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:ems="10"
+                    android:id="@+id/name"
+                    android:labelFor="@+id/name"
+                    android:hint="@string/agency_name"
+                    android:text="@={agency.name}"/>
+        </android.support.design.widget.TextInputLayout>
+    </RelativeLayout>
+</layout>

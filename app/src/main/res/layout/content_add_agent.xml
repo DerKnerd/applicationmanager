@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="agent" type="de.knerd.applicationmanager.models.AgentModel"/>
+    </data>
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:showIn="@layout/activity_add_agent"
+            tools:context="de.knerd.applicationmanager.activities.AddAgentActivityFragment"
+            android:orientation="vertical">
+        <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                       android:layout_height="match_parent">
+            <EditText android:layout_width="match_parent" android:layout_height="match_parent"
+                      android:id="@+id/name"
+                      android:text="@={agent.name}"
+                      android:inputType="textPersonName"
+                      android:labelFor="@+id/name"
+                      android:hint="@string/agent_name"/>
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                       android:layout_height="match_parent">
+            <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:ems="10"
+                    android:id="@+id/lastContact"
+                    android:labelFor="@+id/lastContact"
+                    android:hint="@string/agent_last_contact"/>
+        </android.support.design.widget.TextInputLayout>
+    </RelativeLayout>
+</layout>

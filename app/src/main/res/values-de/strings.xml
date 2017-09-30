@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bewerbungsmanager</string>
+    <string name="agency_fragment_title">Agentur</string>
+    <string name="save">Speichern</string>
+    <string name="title_activity_add_agency">Agentur hinzufügen</string>
+    <string name="title_activity_main">Bewerbungsmanager</string>
+    <string name="agency_name">Agenturname</string>
+    <string name="agency_saved">Agentur %1$s gespeichert</string>
+    <string name="error_saving_agency">Fehler beim Speichern der Agentur</string>
+    <string name="edit">Edit</string>
+    <string name="agent_saved">Agent %1$s gespeichert</string>
+    <string name="error_saving_agent">Fehler beim Speichern des Agenten</string>
+    <string name="title_activity_add_agent">Agent hinzufügen</string>
+    <string name="agent_last_contact">Letzter Kontakt</string>
+    <string name="agent_name">Name</string>
+</resources>
