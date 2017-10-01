@@ -1,4 +1,4 @@
-package de.knerd.applicationmanager.viewadapter
+package de.knerd.applicationmanager.adapter
 
 import android.content.Context
 import android.databinding.DataBindingUtil
@@ -7,17 +7,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import de.knerd.applicationmanager.R
 import de.knerd.applicationmanager.databinding.FragmentAgencyBinding
-import de.knerd.applicationmanager.listener.OnListFragmentInteractionListener
+import de.knerd.applicationmanager.listener.OnAgencyListFragmentInteractionListener
 import de.knerd.applicationmanager.models.AgencyModel
-import de.knerd.applicationmanager.viewadapter.viewholder.AgencyBindingViewHolder
+import de.knerd.applicationmanager.adapter.viewholder.AgencyBindingViewHolder
 
 /**
  * [RecyclerView.Adapter] that can display a [AgencyModel] and makes a call to the
- * specified [OnListFragmentInteractionListener].
+ * specified [OnAgencyListFragmentInteractionListener].
  */
 class AgencyRecyclerViewAdapter(
         private val mValues: List<AgencyModel>,
-        private val mListener: OnListFragmentInteractionListener?,
+        private val mListenerAgency: OnAgencyListFragmentInteractionListener?,
         private val context: Context
 ) : RecyclerView.Adapter<AgencyBindingViewHolder>() {
 
@@ -32,7 +32,7 @@ class AgencyRecyclerViewAdapter(
         binding.item = mValues[position]
         binding.executePendingBindings()
         holder.itemView.setOnClickListener {
-            mListener!!.onAgencyListFragmentInteraction(holder.binding.item)
+            mListenerAgency!!.onAgencyListFragmentInteraction(holder.binding.item)
         }
     }
 

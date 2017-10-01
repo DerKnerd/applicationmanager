@@ -7,7 +7,7 @@ import com.j256.ormlite.table.DatabaseTable
 
 @DatabaseTable(tableName = "application")
 class ApplicationModel : BaseDaoEnabled<BaseDaoImpl<ApplicationModel, Int>, Int>() {
-    @DatabaseField(foreign = true, canBeNull = false)
+    @DatabaseField(foreign = true, canBeNull = false, foreignAutoRefresh = true)
     val agent: AgentModel? = null
     @DatabaseField(canBeNull = false)
     val companyName: String? = null

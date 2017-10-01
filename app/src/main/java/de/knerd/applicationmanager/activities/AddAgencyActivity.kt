@@ -24,45 +24,62 @@ class AddAgencyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView<ActivityAddAgencyBinding>(this, R.layout.activity_add_agency)
-        binding.agency = AgencyModel()
+        setupBinding()
+        setupToolbar()
+    }
 
+    private fun setupToolbar() {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
+    private fun setupBinding() {
+        binding = DataBindingUtil.setContentView<ActivityAddAgencyBinding>(this, R.layout.activity_add_agency)
+        binding.agency = AgencyModel()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_add, menu)
+        menuInflater.inflate(R.menu.menu_add_agency, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        return if (id == android.R.id.home) {
-            val intent = Intent(this, MainActivity::class.java)
-            navigateUpTo(intent)
-            true
-        } else if (save()) {
-            val intent = Intent(this, AgencyDetailActivity::class.java)
-            intent.putExtra(AgencyDetailActivity.ARG_ITEM_ID, binding.agency.id)
-            navigateUpTo(intent)
-            true
-        } else {
-            false
+        val menuItemId = item.itemId
+        return when {
+            menuItemId == android.R.id.home -> {
+                navigateBack()
+                true
+            }
+            save() -> {
+                val intent = Intent(this, AgencyDetailActivity::class.java)
+                intent.putExtra(AgencyDetailActivity.ARG_ITEM_ID, binding.agency.id)
+                startActivity(intent)
+                true
+            }
+            else -> false
         }
     }
 
+    override fun onBackPressed() {
+        navigateBack()
+    }
+
+    private fun navigateBack() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
+
     private fun save(): Boolean {
-        try {
+        return try {
             val dao = DaoManager.createDao(getConnection(this), AgencyModel::class.java)
             dao.create(binding.agency)
             Toast.makeText(this, getString(R.string.agency_saved, binding.agency.name), Toast.LENGTH_SHORT).show()
-            return true
+            true
         } catch (ex: SQLException) {
             Toast.makeText(this, getString(R.string.error_saving_agency), Toast.LENGTH_LONG).show()
             Log.e("agency", ex.message, ex)
-            return false
+            false
         }
     }
 }

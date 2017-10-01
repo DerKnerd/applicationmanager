@@ -1,34 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable name="agent" type="de.knerd.applicationmanager.models.AgentModel"/>
     </data>
-    <RelativeLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:showIn="@layout/activity_add_agent"
-            tools:context="de.knerd.applicationmanager.activities.AddAgentActivityFragment"
-            android:orientation="vertical">
-        <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
-                                                       android:layout_height="match_parent">
-            <EditText android:layout_width="match_parent" android:layout_height="match_parent"
-                      android:id="@+id/name"
-                      android:text="@={agent.name}"
-                      android:inputType="textPersonName"
-                      android:labelFor="@+id/name"
-                      android:hint="@string/agent_name"/>
-        </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
-                                                       android:layout_height="match_parent">
+            tools:context="de.knerd.applicationmanager.activities.AddAgentActivity"
+            android:orientation="vertical"
+            android:layout_margin="16dp">
+        <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/agency"
+                android:labelFor="@+id/agency"
+                android:hint="@string/agent_agency"/>
+        <android.support.design.widget.TextInputLayout android:layout_height="wrap_content"
+                                                       android:layout_width="match_parent"
+                                                       android:orientation="horizontal">
             <EditText
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="date"
+                    android:inputType="textPersonName"
                     android:ems="10"
-                    android:id="@+id/lastContact"
-                    android:labelFor="@+id/lastContact"
-                    android:hint="@string/agent_last_contact"/>
+                    android:id="@+id/name"
+                    android:labelFor="@+id/name"
+                    android:hint="@string/agent_name"
+                    android:text="@={agent.name}"/>
         </android.support.design.widget.TextInputLayout>
-    </RelativeLayout>
+        <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                       android:layout_height="wrap_content"
+                                                       android:orientation="horizontal">
+            <AutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:id="@+id/greeting"
+                    android:labelFor="@+id/greeting"
+                    android:hint="@string/agent_greeting"
+                    android:text="@={agent.greeting}"
+                    android:completionThreshold="1"/>
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                       android:layout_height="wrap_content"
+                                                       android:orientation="horizontal">
+            <Button
+                    android:id="@+id/lastContact"
+                    android:clickable="true"
+                    android:hint="@string/agent_last_contact"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:onClick="onPickLastContact"
+                    android:text="@{agent.lastContactFormatted}"/>
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
 </layout>

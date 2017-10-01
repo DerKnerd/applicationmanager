@@ -24,4 +24,12 @@ class AgencyModel : BaseObservable() {
     @ForeignCollectionField(eager = false)
     @get:Bindable
     var agents: ForeignCollection<AgentModel>? = null
+
+    override fun toString(): String {
+        return if (name != null) {
+            name!!
+        } else {
+            ""
+        }
+    }
 }

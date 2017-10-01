@@ -29,14 +29,6 @@
                     android:value="de.knerd.applicationmanager.MainActivity"/>
         </activity>
         <activity
-                android:name=".activities.AgencyDetailActivity"
-                android:parentActivityName=".MainActivity"
-                android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="de.knerd.applicationmanager.MainActivity"/>
-        </activity>
-        <activity
                 android:name=".activities.AddAgentActivity"
                 android:label="@string/title_activity_add_agent"
                 android:parentActivityName=".activities.AgencyDetailActivity"
@@ -45,6 +37,19 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="de.knerd.applicationmanager.activities.AgencyDetailActivity"/>
         </activity>
+        <activity android:name="de.knerd.applicationmanager.activities.AgencyDetailActivity"
+                  android:label="@string/title_activity_agency_detail"
+                  android:theme="@style/AppTheme.NoActionBar"
+                  android:parentActivityName="de.knerd.applicationmanager.MainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                       android:value="de.knerd.applicationmanager.MainActivity"/>
+        </activity>
+        <activity android:name="de.knerd.applicationmanager.activities.AgentDetailActivity"
+                  android:label="@string/title_activity_agency_detail"
+                  android:theme="@style/AppTheme.NoActionBar"
+                  android:parentActivityName="de.knerd.applicationmanager.activities.AgencyDetailActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                       android:value="de.knerd.applicationmanager.activities.AgencyDetailActivity"/>
+        </activity>
     </application>
-
 </manifest>

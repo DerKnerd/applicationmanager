@@ -7,6 +7,7 @@ import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.field.ForeignCollectionField
 import com.j256.ormlite.table.DatabaseTable
 import de.knerd.applicationmanager.BR
+import java.text.SimpleDateFormat
 import java.util.*
 
 @DatabaseTable(tableName = "contact_person")
@@ -26,16 +27,28 @@ class AgentModel : BaseObservable() {
         set(value) {
             field = value
             notifyPropertyChanged(BR.lastContact)
+            notifyPropertyChanged(BR.lastContactFormatted)
         }
     @DatabaseField(canBeNull = false)
     @get:Bindable
-    var greeting: Greeting = Greeting.FormalGerman
+    var greeting: String? = null
         set(value) {
             field = value
             notifyPropertyChanged(BR.greeting)
         }
-    @DatabaseField(foreign = true, canBeNull = false)
+    @DatabaseField(foreign = true, canBeNull = false, foreignAutoRefresh = true)
     var agency: AgencyModel? = null
     @ForeignCollectionField(eager = false)
     var applications: ForeignCollection<ApplicationModel>? = null
+
+    @get:Bindable
+    val lastContactFormatted: String
+        get() {
+            val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY)
+            return if (lastContact != null) {
+                formatter.format(lastContact)
+            } else {
+                ""
+            }
+        }
 }

@@ -1,10 +1,8 @@
-package de.knerd.applicationmanager.fragments
+package de.knerd.applicationmanager.adapter
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import de.knerd.applicationmanager.activities.AddAgencyActivity
-import kotlin.reflect.KClass
 
 class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
@@ -28,9 +26,9 @@ class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
         return addActivities[position]
     }
 
-    fun addFragment(fragment: Fragment, title: String, addActivityClass: KClass<AddAgencyActivity>) {
+    fun <T> addFragment(fragment: Fragment, title: String, addActivityClass: Class<T>) {
         sections += fragment
         sectionTitles += title
-        addActivities += addActivityClass.java
+        addActivities += addActivityClass
     }
 }

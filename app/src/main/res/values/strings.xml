@@ -9,9 +9,13 @@
     <string name="agency_saved">Agency %1$s saved successfully</string>
     <string name="error_saving_agency">Error saving agency</string>
     <string name="edit">Edit</string>
-    <string name="title_activity_add_agent">AddAgentActivity</string>
+    <string name="title_activity_add_agent">Add agent</string>
     <string name="agent_saved">Agent $1%s saved</string>
     <string name="error_saving_agent">Error saving agent</string>
     <string name="agent_name">Name</string>
     <string name="agent_last_contact">Last contact</string>
+    <string name="title_activity_agency_detail">AgencyDetailActivity</string>
+    <string name="agent_fragment_title">Agents</string>
+    <string name="agent_greeting">Greeting</string>
+    <string name="agent_agency">Agency</string>
 </resources>
