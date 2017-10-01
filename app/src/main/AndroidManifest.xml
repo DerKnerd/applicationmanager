@@ -37,19 +37,38 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="de.knerd.applicationmanager.activities.AgencyDetailActivity"/>
         </activity>
-        <activity android:name="de.knerd.applicationmanager.activities.AgencyDetailActivity"
-                  android:label="@string/title_activity_agency_detail"
-                  android:theme="@style/AppTheme.NoActionBar"
-                  android:parentActivityName="de.knerd.applicationmanager.MainActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                       android:value="de.knerd.applicationmanager.MainActivity"/>
+        <activity
+                android:name=".activities.AgencyDetailActivity"
+                android:label="@string/title_activity_agency_detail"
+                android:parentActivityName=".MainActivity"
+                android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="de.knerd.applicationmanager.MainActivity"/>
         </activity>
-        <activity android:name="de.knerd.applicationmanager.activities.AgentDetailActivity"
-                  android:label="@string/title_activity_agency_detail"
-                  android:theme="@style/AppTheme.NoActionBar"
-                  android:parentActivityName="de.knerd.applicationmanager.activities.AgencyDetailActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                       android:value="de.knerd.applicationmanager.activities.AgencyDetailActivity"/>
+        <activity
+                android:name=".activities.AgentDetailActivity"
+                android:label="@string/title_activity_agency_detail"
+                android:parentActivityName=".activities.AgencyDetailActivity"
+                android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="de.knerd.applicationmanager.activities.AgencyDetailActivity"/>
+        </activity>
+        <activity
+                android:name=".activities.AddApplicationActivity"
+                android:label="@string/title_activity_add_application"
+                android:parentActivityName=".MainActivity"
+                android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="de.knerd.applicationmanager.MainActivity"/>
+        </activity>
+        <activity
+                android:name=".activities.ApplicationDetailActivity"
+                android:label="@string/title_activity_application_detail"
+                android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
+
 </manifest>

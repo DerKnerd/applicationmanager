@@ -51,4 +51,12 @@ class AgentModel : BaseObservable() {
                 ""
             }
         }
+
+    override fun toString(): String {
+        return if (name != null) {
+            name!!
+        } else {
+            ""
+        }
+    }
 }

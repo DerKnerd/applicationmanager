@@ -17,12 +17,16 @@ import de.knerd.applicationmanager.R
 import de.knerd.applicationmanager.adapter.SectionsPagerAdapter
 import de.knerd.applicationmanager.databinding.ActivityAgencyDetailBinding
 import de.knerd.applicationmanager.fragments.AgentFragment
+import de.knerd.applicationmanager.fragments.ApplicationFragment
+import de.knerd.applicationmanager.fragments.ApplicationSource
 import de.knerd.applicationmanager.listener.OnAgentListFragmentInteractionListener
+import de.knerd.applicationmanager.listener.OnApplicationListFragmentInteractionListener
 import de.knerd.applicationmanager.models.AgencyModel
 import de.knerd.applicationmanager.models.AgentModel
+import de.knerd.applicationmanager.models.ApplicationModel
 import de.knerd.applicationmanager.models.getConnection
 
-class AgencyDetailActivity : AppCompatActivity(), OnAgentListFragmentInteractionListener {
+class AgencyDetailActivity : AppCompatActivity(), OnAgentListFragmentInteractionListener, OnApplicationListFragmentInteractionListener {
 
     lateinit var binding: ActivityAgencyDetailBinding
 
@@ -45,14 +49,8 @@ class AgencyDetailActivity : AppCompatActivity(), OnAgentListFragmentInteraction
         super.onCreate(savedInstanceState)
 
         setupBinding()
-        setupTabs()
         setupToolbar()
-    }
-
-    private fun setupToolbar() {
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
-        setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        setupTabs()
     }
 
     private fun setupBinding() {
@@ -61,6 +59,25 @@ class AgencyDetailActivity : AppCompatActivity(), OnAgentListFragmentInteraction
 
         binding = DataBindingUtil.setContentView<ActivityAgencyDetailBinding>(this, R.layout.activity_agency_detail)
         binding.agency = agency
+    }
+
+    private fun setupTabs() {
+        mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
+        mSectionsPagerAdapter!!.addFragment(AgentFragment.newInstance(binding.agency.id), getString(R.string.agent_fragment_title), AddAgentActivity::class.java)
+        mSectionsPagerAdapter!!.addFragment(ApplicationFragment.newInstance(ApplicationSource.Agency, binding.agency.id), getString(R.string.application_fragment_title), AddApplicationActivity::class.java)
+
+        mViewPager = findViewById(R.id.container) as ViewPager
+
+        mViewPager!!.adapter = mSectionsPagerAdapter
+
+        val tabLayout = findViewById(R.id.tabs) as TabLayout
+        tabLayout.setupWithViewPager(mViewPager)
+    }
+
+    private fun setupToolbar() {
+        val toolbar = findViewById(R.id.toolbar) as Toolbar
+        setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -86,28 +103,22 @@ class AgencyDetailActivity : AppCompatActivity(), OnAgentListFragmentInteraction
         startActivity(Intent(this, MainActivity::class.java))
     }
 
-    fun onAddAgentClick(view: View) {
-        val intent = Intent(this, AddAgentActivity::class.java)
+    fun onFabClick(view: View) {
+        val intent = Intent(this, mSectionsPagerAdapter!!.getAddActivity(mViewPager!!.currentItem))
         intent.putExtra(AddAgentActivity.AGENCY_ID, binding.agency.id)
         startActivity(intent)
-    }
-
-    private fun setupTabs() {
-        mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
-        mSectionsPagerAdapter!!.addFragment(AgentFragment(binding.agency.id), getString(R.string.agent_fragment_title), AddAgentActivity::class.java)
-
-        mViewPager = findViewById(R.id.container) as ViewPager
-
-        mViewPager!!.adapter = mSectionsPagerAdapter
-
-        val tabLayout = findViewById(R.id.tabs) as TabLayout
-        tabLayout.setupWithViewPager(mViewPager)
     }
 
     override fun onAgentListFragmentInteraction(item: AgentModel) {
         val intent = Intent(this, AgentDetailActivity::class.java)
         intent.putExtra(AgentDetailActivity.ARG_ITEM_ID, item.id)
         startActivity(intent)
+    }
+
+    override fun onApplicationListFragmentInteraction(item: ApplicationModel) {
+//        val intent = Intent(this, ApplicationDetailActivity::class.java)
+//        intent.putExtra(ApplicationDetailActivity.ARG_ITEM_ID, item.id)
+//        startActivity(intent)
     }
 
     companion object {

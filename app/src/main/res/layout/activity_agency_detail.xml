@@ -52,7 +52,7 @@
                 app:layout_anchor="@id/app_bar"
                 app:layout_anchorGravity="bottom|end"
                 app:srcCompat="@drawable/add_user"
-                android:onClick="onAddAgentClick"/>
+                android:onClick="onFabClick"/>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

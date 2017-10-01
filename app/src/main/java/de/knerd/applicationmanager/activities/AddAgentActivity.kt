@@ -116,7 +116,7 @@ class AddAgentActivity : AppCompatActivity() {
         return true
     }
 
-    fun onPickLastContact(view: View?) {
+    fun onPickApplicationDate(view: View?) {
         DatePickerDialog(
                 this,
                 { _, year, monthOfYear, dayOfMonth ->

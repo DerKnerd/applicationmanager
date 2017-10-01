@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="application_states">
+        <item>Offen</item>
+        <item>Telefoninterview</item>
+        <item>Bewerbungsgespräch</item>
+        <item>Angebot</item>
+        <item>Angestellt</item>
+        <item>Abgelehnt</item>
+    </string-array>
+    <string-array name="greetings">
+        <item>Sie</item>
+        <item>Du</item>
+        <item>You (formell)</item>
+        <item>You (informell)</item>
+    </string-array>
+</resources>

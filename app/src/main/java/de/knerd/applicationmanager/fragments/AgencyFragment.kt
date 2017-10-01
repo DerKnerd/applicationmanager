@@ -2,6 +2,7 @@ package de.knerd.applicationmanager.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -9,12 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.j256.ormlite.dao.DaoManager
 import de.knerd.applicationmanager.R
+import de.knerd.applicationmanager.adapter.AgencyRecyclerViewAdapter
 import de.knerd.applicationmanager.listener.OnAgencyListFragmentInteractionListener
 import de.knerd.applicationmanager.models.AgencyModel
 import de.knerd.applicationmanager.models.getConnection
-import de.knerd.applicationmanager.adapter.AgencyRecyclerViewAdapter
 
-class AgencyFragment : BaseFragment(R.layout.fragment_agency) {
+class AgencyFragment : Fragment() {
 
     private var mListenerAgency: OnAgencyListFragmentInteractionListener? = null
 
@@ -43,5 +44,12 @@ class AgencyFragment : BaseFragment(R.layout.fragment_agency) {
     override fun onDetach() {
         super.onDetach()
         mListenerAgency = null
+    }
+
+    companion object {
+
+        fun newInstance(): AgencyFragment {
+            return AgencyFragment()
+        }
     }
 }

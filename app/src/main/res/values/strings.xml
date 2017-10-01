@@ -10,7 +10,7 @@
     <string name="error_saving_agency">Error saving agency</string>
     <string name="edit">Edit</string>
     <string name="title_activity_add_agent">Add agent</string>
-    <string name="agent_saved">Agent $1%s saved</string>
+    <string name="agent_saved">Agent %1$s saved</string>
     <string name="error_saving_agent">Error saving agent</string>
     <string name="agent_name">Name</string>
     <string name="agent_last_contact">Last contact</string>
@@ -18,4 +18,14 @@
     <string name="agent_fragment_title">Agents</string>
     <string name="agent_greeting">Greeting</string>
     <string name="agent_agency">Agency</string>
+    <string name="application_fragment_title">Applications</string>
+    <string name="title_activity_add_application">Add Application</string>
+    <string name="agent_detail_fragment_title">Details</string>
+    <string name="application_company_name">Company Name</string>
+    <string name="application_agent">Agent</string>
+    <string name="application_application_date">Application Date</string>
+    <string name="application_state">State</string>
+    <string name="title_activity_application_detail">ApplicationDetailActivity</string>
+    <string name="application_saved">Application %1$s saved</string>
+    <string name="error_saving_application">Error saving application</string>
 </resources>

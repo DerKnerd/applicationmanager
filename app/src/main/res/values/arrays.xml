@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="application_states">
+        <item>Open</item>
+        <item>Phone call</item>
+        <item>Meeting</item>
+        <item>Offer</item>
+        <item>Accepted</item>
+        <item>Declined</item>
+    </string-array>
+    <string-array name="greetings">
+        <item>Sie</item>
+        <item>Du</item>
+        <item>You (formal)</item>
+        <item>You (informal)</item>
+    </string-array>
+</resources>

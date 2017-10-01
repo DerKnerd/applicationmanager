@@ -3,22 +3,22 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
     <data>
-        <variable name="agent" type="de.knerd.applicationmanager.models.AgentModel"/>
+        <variable name="application" type="de.knerd.applicationmanager.models.ApplicationModel"/>
     </data>
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:showIn="@layout/activity_add_agent"
-            tools:context="de.knerd.applicationmanager.activities.AddAgentActivity"
+            tools:showIn="@layout/activity_add_application"
+            tools:context="de.knerd.applicationmanager.activities.AddApplicationActivity"
             android:orientation="vertical"
             android:layout_margin="16dp">
         <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/agency"
-                android:labelFor="@+id/agency"
-                android:hint="@string/agent_agency"/>
+                android:id="@+id/agent"
+                android:labelFor="@+id/agent"
+                android:hint="@string/application_agent"/>
         <android.support.design.widget.TextInputLayout android:layout_height="wrap_content"
                                                        android:layout_width="match_parent"
                                                        android:orientation="horizontal">
@@ -29,8 +29,8 @@
                     android:ems="10"
                     android:id="@+id/name"
                     android:labelFor="@+id/name"
-                    android:hint="@string/agent_name"
-                    android:text="@={agent.name}"/>
+                    android:hint="@string/application_company_name"
+                    android:text="@={application.companyName}"/>
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
                                                        android:layout_height="wrap_content"
@@ -38,11 +38,10 @@
             <AutoCompleteTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:id="@+id/greeting"
-                    android:labelFor="@+id/greeting"
-                    android:hint="@string/agent_greeting"
-                    android:text="@={agent.greeting}"
+                    android:id="@+id/state"
+                    android:labelFor="@+id/state"
+                    android:hint="@string/application_state"
+                    android:text="@={application.state}"
                     android:completionThreshold="1"/>
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
@@ -51,11 +50,11 @@
             <Button
                     android:id="@+id/lastContact"
                     android:clickable="true"
-                    android:hint="@string/agent_last_contact"
+                    android:hint="@string/application_application_date"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:onClick="onPickApplicationDate"
-                    android:text="@{agent.lastContactFormatted}"/>
+                    android:text="@{application.applicationDateFormatted}"/>
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 </layout>

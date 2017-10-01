@@ -1,8 +1,8 @@
 package de.knerd.applicationmanager.fragments
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -16,9 +16,9 @@ import de.knerd.applicationmanager.models.AgencyModel
 import de.knerd.applicationmanager.models.AgentModel
 import de.knerd.applicationmanager.models.getConnection
 
-@SuppressLint("ValidFragment")
-class AgentFragment(private val agencyId: Int) : BaseFragment(R.layout.fragment_agent) {
+class AgentFragment : Fragment() {
 
+    private var agencyId: Int = -1
     private var mListenerAgent: OnAgentListFragmentInteractionListener? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -53,5 +53,13 @@ class AgentFragment(private val agencyId: Int) : BaseFragment(R.layout.fragment_
     override fun onDetach() {
         super.onDetach()
         mListenerAgent = null
+    }
+
+    companion object {
+        fun newInstance(id: Int): AgentFragment {
+            val fragment = AgentFragment()
+            fragment.agencyId = id
+            return fragment
+        }
     }
 }

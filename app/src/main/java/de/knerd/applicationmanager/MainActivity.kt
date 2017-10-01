@@ -8,20 +8,21 @@ import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View
-import de.knerd.applicationmanager.activities.AddAgencyActivity
-import de.knerd.applicationmanager.activities.AddAgentActivity
-import de.knerd.applicationmanager.activities.AgencyDetailActivity
-import de.knerd.applicationmanager.activities.AgentDetailActivity
+import de.knerd.applicationmanager.activities.*
 import de.knerd.applicationmanager.adapter.SectionsPagerAdapter
 import de.knerd.applicationmanager.fragments.AgencyFragment
 import de.knerd.applicationmanager.fragments.AgentFragment
+import de.knerd.applicationmanager.fragments.ApplicationFragment
 import de.knerd.applicationmanager.listener.OnAgencyListFragmentInteractionListener
 import de.knerd.applicationmanager.listener.OnAgentListFragmentInteractionListener
+import de.knerd.applicationmanager.listener.OnApplicationListFragmentInteractionListener
 import de.knerd.applicationmanager.models.AgencyModel
 import de.knerd.applicationmanager.models.AgentModel
+import de.knerd.applicationmanager.models.ApplicationModel
 import de.knerd.applicationmanager.models.setupDatabase
 
-class MainActivity : AppCompatActivity(), OnAgencyListFragmentInteractionListener, OnAgentListFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), OnAgencyListFragmentInteractionListener, OnAgentListFragmentInteractionListener, OnApplicationListFragmentInteractionListener {
+
     /**
      * The [android.support.v4.view.PagerAdapter] that will provide
      * fragments for each of the sections. We use a
@@ -58,6 +59,16 @@ class MainActivity : AppCompatActivity(), OnAgencyListFragmentInteractionListene
         startActivity(intent)
     }
 
+    override fun onApplicationListFragmentInteraction(item: ApplicationModel) {
+//        val intent = Intent(this, ApplicationDetailActivity::class.java)
+//        intent.putExtra(ApplicationDetailActivity.ARG_ITEM_ID, item.id)
+//        startActivity(intent)
+    }
+
+    override fun onBackPressed() {
+        moveTaskToBack(true)
+    }
+
     private fun setupToolbar() {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
@@ -66,8 +77,9 @@ class MainActivity : AppCompatActivity(), OnAgencyListFragmentInteractionListene
     private fun setupTabs() {
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
-        mSectionsPagerAdapter!!.addFragment(AgencyFragment(), getString(R.string.agency_fragment_title), AddAgencyActivity::class.java)
-        mSectionsPagerAdapter!!.addFragment(AgentFragment(-1), getString(R.string.agent_fragment_title), AddAgentActivity::class.java)
+        mSectionsPagerAdapter!!.addFragment(AgencyFragment.newInstance(), getString(R.string.agency_fragment_title), AddAgencyActivity::class.java)
+        mSectionsPagerAdapter!!.addFragment(AgentFragment.newInstance(-1), getString(R.string.agent_fragment_title), AddAgentActivity::class.java)
+        mSectionsPagerAdapter!!.addFragment(ApplicationFragment.newInstance(), getString(R.string.application_fragment_title), AddApplicationActivity::class.java)
 
         mViewPager = findViewById(R.id.container) as ViewPager
 
