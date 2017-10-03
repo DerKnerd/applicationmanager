@@ -28,4 +28,7 @@
     <string name="title_activity_application_detail">ApplicationDetailActivity</string>
     <string name="application_saved">Application %1$s saved</string>
     <string name="error_saving_application">Error saving application</string>
+    <string name="edit_last_contact">Last contact</string>
+    <string name="edit_state">Edit status</string>
+    <string name="call">call</string>
 </resources>

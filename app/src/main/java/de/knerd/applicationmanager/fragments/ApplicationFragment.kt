@@ -32,8 +32,8 @@ open class ApplicationFragment : Fragment() {
             val applicationDao = DaoManager.createDao(getConnection(context), ApplicationModel::class.java)
             view.adapter = when (source) {
                 ApplicationSource.Main -> ApplicationRecyclerViewAdapter(applicationDao.queryForAll(), mListenerApplication, context)
-                ApplicationSource.Agent -> ApplicationRecyclerViewAdapter(applicationDao.filter { item -> item.agent!!.id == id }, mListenerApplication, context)
-                ApplicationSource.Agency -> ApplicationRecyclerViewAdapter(applicationDao.filter { item -> item.agent!!.agency!!.id == id }, mListenerApplication, context)
+                ApplicationSource.Agent -> ApplicationRecyclerViewAdapter(applicationDao.filter { item -> item.agent!!.id == objectId }, mListenerApplication, context)
+                ApplicationSource.Agency -> ApplicationRecyclerViewAdapter(applicationDao.filter { item -> item.agent!!.agency!!.id == objectId }, mListenerApplication, context)
             }
         }
         return view

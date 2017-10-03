@@ -158,7 +158,7 @@ class AddApplicationActivity : AppCompatActivity() {
     private val calendar: Calendar = Calendar.getInstance()
 
     fun onPickApplicationDate(view: View?) {
-        DatePickerDialog(
+        val datePickerDialog = DatePickerDialog(
                 this,
                 { _, year, monthOfYear, dayOfMonth ->
                     calendar.set(year, monthOfYear, dayOfMonth)
@@ -167,7 +167,9 @@ class AddApplicationActivity : AppCompatActivity() {
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)
-        ).show()
+        )
+        datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
+        datePickerDialog.show()
     }
 
     companion object {

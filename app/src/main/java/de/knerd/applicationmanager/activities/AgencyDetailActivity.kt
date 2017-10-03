@@ -3,13 +3,12 @@ package de.knerd.applicationmanager.activities
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.TabLayout
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import com.j256.ormlite.dao.DaoManager
 import de.knerd.applicationmanager.MainActivity
@@ -72,6 +71,7 @@ class AgencyDetailActivity : AppCompatActivity(), OnAgentListFragmentInteraction
 
         val tabLayout = findViewById(R.id.tabs) as TabLayout
         tabLayout.setupWithViewPager(mViewPager)
+        tabLayout.addOnTabSelectedListener(TabChangedListener(mSectionsPagerAdapter, findViewById(R.id.fab) as FloatingActionButton, this))
     }
 
     private fun setupToolbar() {
@@ -80,23 +80,8 @@ class AgencyDetailActivity : AppCompatActivity(), OnAgentListFragmentInteraction
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_agency_detail, menu)
-        return true
-    }
-
     override fun onBackPressed() {
         navigateBack()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val menuItemId = item.itemId
-        return if (menuItemId == android.R.id.home) {
-            navigateBack()
-            true
-        } else {
-            super.onOptionsItemSelected(item)
-        }
     }
 
     private fun navigateBack() {
@@ -116,9 +101,9 @@ class AgencyDetailActivity : AppCompatActivity(), OnAgentListFragmentInteraction
     }
 
     override fun onApplicationListFragmentInteraction(item: ApplicationModel) {
-//        val intent = Intent(this, ApplicationDetailActivity::class.java)
-//        intent.putExtra(ApplicationDetailActivity.ARG_ITEM_ID, item.id)
-//        startActivity(intent)
+        val intent = Intent(this, ApplicationDetailActivity::class.java)
+        intent.putExtra(ApplicationDetailActivity.ARG_ITEM_ID, item.id)
+        startActivity(intent)
     }
 
     companion object {

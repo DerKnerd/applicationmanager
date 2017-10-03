@@ -27,4 +27,6 @@
     <string name="application_state">Status</string>
     <string name="application_saved">Bewerbung %1$s gespeichert</string>
     <string name="error_saving_application">Fehler beim Speichern der Bewerbung</string>
+    <string name="edit_last_contact">Letzter Kontakt</string>
+    <string name="edit_state">Status bearbeiten</string>
 </resources>

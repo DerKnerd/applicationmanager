@@ -2,9 +2,9 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="de.knerd.applicationmanager.activities.AgencyDetailActivity">
-    <item android:id="@+id/action_edit"
-          android:title="@string/edit"
+    <item android:id="@+id/action_edit_last_contact"
+          android:title="@string/edit_last_contact"
           android:orderInCategory="100"
           app:showAsAction="ifRoom"
-          android:icon="@drawable/edit"/>
+          android:icon="@drawable/edit_last_contact"/>
 </menu>

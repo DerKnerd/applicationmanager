@@ -2,6 +2,7 @@
 <layout>
     <data>
         <variable name="agency" type="de.knerd.applicationmanager.models.AgencyModel"/>
+        <variable name="fabIcon" type="Integer"/>
     </data>
     <android.support.design.widget.CoordinatorLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -49,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/fab_margin"
-                app:layout_anchor="@id/app_bar"
+                app:layout_anchor="@id/container"
                 app:layout_anchorGravity="bottom|end"
                 app:srcCompat="@drawable/add_user"
                 android:onClick="onFabClick"/>

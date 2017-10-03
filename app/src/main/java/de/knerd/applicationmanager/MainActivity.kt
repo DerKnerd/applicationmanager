@@ -2,6 +2,7 @@ package de.knerd.applicationmanager
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.TabLayout
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
@@ -60,9 +61,9 @@ class MainActivity : AppCompatActivity(), OnAgencyListFragmentInteractionListene
     }
 
     override fun onApplicationListFragmentInteraction(item: ApplicationModel) {
-//        val intent = Intent(this, ApplicationDetailActivity::class.java)
-//        intent.putExtra(ApplicationDetailActivity.ARG_ITEM_ID, item.id)
-//        startActivity(intent)
+        val intent = Intent(this, ApplicationDetailActivity::class.java)
+        intent.putExtra(ApplicationDetailActivity.ARG_ITEM_ID, item.id)
+        startActivity(intent)
     }
 
     override fun onBackPressed() {
@@ -88,6 +89,7 @@ class MainActivity : AppCompatActivity(), OnAgencyListFragmentInteractionListene
 
         val tabLayout = findViewById(R.id.tabs) as TabLayout
         tabLayout.setupWithViewPager(mViewPager)
+        tabLayout.addOnTabSelectedListener(TabChangedListener(mSectionsPagerAdapter, findViewById(R.id.fab) as FloatingActionButton, this))
     }
 
     fun addEntry(view: View) {

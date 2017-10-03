@@ -1,14 +1,19 @@
 package de.knerd.applicationmanager.fragments
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import de.knerd.applicationmanager.R
 import de.knerd.applicationmanager.databinding.FragmentAgentDetailsBinding
 import de.knerd.applicationmanager.models.AgentModel
+
 
 /**
  * A simple [Fragment] subclass.
@@ -23,25 +28,36 @@ class AgentDetailsFragment : Fragment() {
 
     lateinit var agent: AgentModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setupBinding()
-    }
+    lateinit var email: String
+    lateinit var phoneNumber: String
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater!!.inflate(R.layout.fragment_agent_details, container, false)
     }
 
-    private fun setupBinding() {
-        binding = DataBindingUtil.setContentView(activity, R.layout.fragment_agent_details)
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupBinding(view)
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(activity, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE), 1)
+        }
+    }
+
+    private fun setupBinding(view: View?) {
+        binding = DataBindingUtil.bind<FragmentAgentDetailsBinding>(view)
         binding.agent = agent
+        binding.phoneNumber = phoneNumber
+        binding.email = email
     }
 
     companion object {
-        fun newInstance(agent: AgentModel): AgentDetailsFragment {
+        fun newInstance(agent: AgentModel, phoneNumber: String, email: String): AgentDetailsFragment {
             val fragment = AgentDetailsFragment()
             fragment.agent = agent
+            fragment.phoneNumber = phoneNumber
+            fragment.email = email
             return fragment
         }
     }
