@@ -10,7 +10,6 @@ import de.knerd.applicationmanager.BR
 
 @DatabaseTable(tableName = "agency")
 class AgencyModel : BaseObservable() {
-
     @DatabaseField(unique = true, canBeNull = false)
     @get:Bindable
     var name: String? = null
@@ -18,9 +17,11 @@ class AgencyModel : BaseObservable() {
             field = value
             notifyPropertyChanged(BR.name)
         }
+
     @DatabaseField(generatedId = true)
     @get:Bindable
     var id: Int = 0
+
     @ForeignCollectionField(eager = false)
     @get:Bindable
     var agents: ForeignCollection<AgentModel>? = null

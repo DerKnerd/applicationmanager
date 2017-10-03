@@ -26,14 +26,6 @@ class ApplicationDetailActivity : AppCompatActivity() {
         setupToolbar()
     }
 
-    private fun setupToolbar() {
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
-        setSupportActionBar(toolbar)
-
-        // Show the Up button in the action bar.
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_application_detail, menu)
         return true
@@ -41,12 +33,6 @@ class ApplicationDetailActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         navigateBack()
-    }
-
-    private fun navigateBack() {
-        val intent = Intent(this, AgentDetailActivity::class.java)
-        intent.putExtra(AgentDetailActivity.ARG_ITEM_ID, binding.application.agent!!.id)
-        startActivity(intent)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -57,6 +43,28 @@ class ApplicationDetailActivity : AppCompatActivity() {
         } else {
             super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun setupToolbar() {
+        val toolbar = findViewById(R.id.toolbar) as Toolbar
+        setSupportActionBar(toolbar)
+
+        // Show the Up button in the action bar.
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun navigateBack() {
+        val intent = Intent(this, AgentDetailActivity::class.java)
+        intent.putExtra(AgentDetailActivity.ARG_ITEM_ID, binding.application.agent!!.id)
+        startActivity(intent)
+    }
+
+    private fun setupBinding() {
+        val applicationDao = DaoManager.createDao(getConnection(this), ApplicationModel::class.java)
+        val application = applicationDao.findLast { item -> item.id == intent.getIntExtra(ApplicationDetailActivity.ARG_ITEM_ID, -1) }
+
+        binding = DataBindingUtil.setContentView<ActivityApplicationDetailBinding>(this, R.layout.activity_application_detail)
+        binding.application = application
     }
 
     fun editState(view: View?) {
@@ -76,14 +84,6 @@ class ApplicationDetailActivity : AppCompatActivity() {
                 })
         dialog = builder.create()
         builder.show()
-    }
-
-    private fun setupBinding() {
-        val applicationDao = DaoManager.createDao(getConnection(this), ApplicationModel::class.java)
-        val application = applicationDao.findLast { item -> item.id == intent.getIntExtra(ApplicationDetailActivity.ARG_ITEM_ID, -1) }
-
-        binding = DataBindingUtil.setContentView<ActivityApplicationDetailBinding>(this, R.layout.activity_application_detail)
-        binding.application = application
     }
 
     companion object {

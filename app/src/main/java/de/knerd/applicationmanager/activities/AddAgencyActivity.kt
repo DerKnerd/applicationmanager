@@ -28,17 +28,6 @@ class AddAgencyActivity : AppCompatActivity() {
         setupToolbar()
     }
 
-    private fun setupToolbar() {
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
-        setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-    }
-
-    private fun setupBinding() {
-        binding = DataBindingUtil.setContentView<ActivityAddAgencyBinding>(this, R.layout.activity_add_agency)
-        binding.agency = AgencyModel()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_add_agency, menu)
         return true
@@ -63,6 +52,17 @@ class AddAgencyActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         navigateBack()
+    }
+
+    private fun setupToolbar() {
+        val toolbar = findViewById(R.id.toolbar) as Toolbar
+        setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun setupBinding() {
+        binding = DataBindingUtil.setContentView<ActivityAddAgencyBinding>(this, R.layout.activity_add_agency)
+        binding.agency = AgencyModel()
     }
 
     private fun navigateBack() {

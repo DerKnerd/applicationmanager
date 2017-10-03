@@ -32,6 +32,7 @@ import de.knerd.applicationmanager.models.getConnection
 class AgencyDetailActivity : AppCompatActivity(), OnAgentListFragmentInteractionListener, OnApplicationListFragmentInteractionListener {
 
     lateinit var binding: ActivityAgencyDetailBinding
+    private var selectedAgent: AgentModel? = null
 
     /**
      * The [android.support.v4.view.PagerAdapter] that will provide
@@ -54,6 +55,27 @@ class AgencyDetailActivity : AppCompatActivity(), OnAgentListFragmentInteraction
         setupBinding()
         setupToolbar()
         setupTabs()
+    }
+
+    override fun onAgentListFragmentInteraction(item: AgentModel) {
+        selectedAgent = item
+        askForContactDetailsPermission()
+    }
+
+    override fun onApplicationListFragmentInteraction(item: ApplicationModel) {
+        val intent = Intent(this, ApplicationDetailActivity::class.java)
+        intent.putExtra(ApplicationDetailActivity.ARG_ITEM_ID, item.id)
+        startActivity(intent)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (grantResults.any()) {
+            navigateToAgent(grantResults[0] == PackageManager.PERMISSION_GRANTED)
+        }
+    }
+
+    override fun onBackPressed() {
+        navigateBack()
     }
 
     private fun setupBinding() {
@@ -84,10 +106,6 @@ class AgencyDetailActivity : AppCompatActivity(), OnAgentListFragmentInteraction
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
-    override fun onBackPressed() {
-        navigateBack()
-    }
-
     private fun navigateBack() {
         startActivity(Intent(this, MainActivity::class.java))
     }
@@ -96,19 +114,6 @@ class AgencyDetailActivity : AppCompatActivity(), OnAgentListFragmentInteraction
         val intent = Intent(this, mSectionsPagerAdapter!!.getAddActivity(mViewPager!!.currentItem))
         intent.putExtra(AddAgentActivity.AGENCY_ID, binding.agency.id)
         startActivity(intent)
-    }
-
-    private var selectedAgent: AgentModel? = null
-
-    override fun onAgentListFragmentInteraction(item: AgentModel) {
-        selectedAgent = item
-        askForContactDetailsPermission()
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (grantResults.any()) {
-            navigateToAgent(grantResults[0] == PackageManager.PERMISSION_GRANTED)
-        }
     }
 
     private fun askForContactDetailsPermission() {
@@ -123,12 +128,6 @@ class AgencyDetailActivity : AppCompatActivity(), OnAgentListFragmentInteraction
         val intent = Intent(this, AgentDetailActivity::class.java)
         intent.putExtra(AgentDetailActivity.ARG_ITEM_ID, selectedAgent!!.id)
         intent.putExtra(AgentDetailActivity.ARG_CONTACT_DETAILS, allowed)
-        startActivity(intent)
-    }
-
-    override fun onApplicationListFragmentInteraction(item: ApplicationModel) {
-        val intent = Intent(this, ApplicationDetailActivity::class.java)
-        intent.putExtra(ApplicationDetailActivity.ARG_ITEM_ID, item.id)
         startActivity(intent)
     }
 

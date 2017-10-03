@@ -31,8 +31,4 @@ class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
         sectionTitles += title
         addActivities += addActivityClass
     }
-
-    fun <T> getFragment(fragment: Class<T>): T? where T : Fragment {
-        return sections.find { f -> f.javaClass == fragment } as T
-    }
 }

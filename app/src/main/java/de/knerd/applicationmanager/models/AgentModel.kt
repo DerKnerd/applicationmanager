@@ -19,8 +19,10 @@ class AgentModel : BaseObservable() {
             field = value
             notifyPropertyChanged(BR.name)
         }
+
     @DatabaseField(generatedId = true)
     var id: Int = 0
+
     @DatabaseField(canBeNull = false)
     @get:Bindable
     var lastContact: Date? = null
@@ -29,6 +31,7 @@ class AgentModel : BaseObservable() {
             notifyPropertyChanged(BR.lastContact)
             notifyPropertyChanged(BR.lastContactFormatted)
         }
+
     @DatabaseField(canBeNull = false)
     @get:Bindable
     var greeting: String? = null
@@ -36,8 +39,10 @@ class AgentModel : BaseObservable() {
             field = value
             notifyPropertyChanged(BR.greeting)
         }
+
     @DatabaseField(foreign = true, canBeNull = false, foreignAutoRefresh = true)
     var agency: AgencyModel? = null
+
     @ForeignCollectionField(eager = false)
     var applications: ForeignCollection<ApplicationModel>? = null
 

@@ -26,6 +26,8 @@ class AddApplicationActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityAddApplicationBinding
 
+    private val calendar: Calendar = Calendar.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,6 +37,32 @@ class AddApplicationActivity : AppCompatActivity() {
         setupState()
         setupSpinner(agencyId, agentId)
         setupToolbar()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_add_application, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val menuItemId = item.itemId
+        return when {
+            menuItemId == android.R.id.home -> {
+                navigateBack()
+                true
+            }
+            save() -> {
+                val intent = Intent(this, AgentDetailActivity::class.java)
+                intent.putExtra(ApplicationDetailActivity.ARG_ITEM_ID, binding.application.id)
+                startActivity(intent)
+                true
+            }
+            else -> false
+        }
+    }
+
+    override fun onBackPressed() {
+        navigateBack()
     }
 
     private fun setupToolbar() {
@@ -96,27 +124,6 @@ class AddApplicationActivity : AppCompatActivity() {
         state.setAdapter(adapter)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val menuItemId = item.itemId
-        return when {
-            menuItemId == android.R.id.home -> {
-                navigateBack()
-                true
-            }
-            save() -> {
-                val intent = Intent(this, AgentDetailActivity::class.java)
-                intent.putExtra(ApplicationDetailActivity.ARG_ITEM_ID, binding.application.id)
-                startActivity(intent)
-                true
-            }
-            else -> false
-        }
-    }
-
-    override fun onBackPressed() {
-        navigateBack()
-    }
-
     private fun navigateBack() {
         val agencyId = intent.getIntExtra(AddApplicationActivity.AGENCY_ID, -1)
         val agentId = intent.getIntExtra(AddApplicationActivity.AGENT_ID, -1)
@@ -136,11 +143,6 @@ class AddApplicationActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_add_application, menu)
-        return true
-    }
-
     private fun save(): Boolean {
         return try {
             val dao = DaoManager.createDao(getConnection(this), ApplicationModel::class.java)
@@ -154,8 +156,6 @@ class AddApplicationActivity : AppCompatActivity() {
             false
         }
     }
-
-    private val calendar: Calendar = Calendar.getInstance()
 
     fun onPickApplicationDate(view: View?) {
         val datePickerDialog = DatePickerDialog(

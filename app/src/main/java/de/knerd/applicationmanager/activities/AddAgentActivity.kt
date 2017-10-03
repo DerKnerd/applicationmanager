@@ -37,6 +37,32 @@ class AddAgentActivity : AppCompatActivity() {
         setupToolbar()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_add_agent, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val menuItemId = item.itemId
+        return when {
+            menuItemId == android.R.id.home -> {
+                navigateBack()
+                true
+            }
+            save() -> {
+                val intent = Intent(this, AgentDetailActivity::class.java)
+                intent.putExtra(AgentDetailActivity.ARG_ITEM_ID, binding.agent.id)
+                startActivity(intent)
+                true
+            }
+            else -> false
+        }
+    }
+
+    override fun onBackPressed() {
+        navigateBack()
+    }
+
     private fun setupToolbar() {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
@@ -79,27 +105,6 @@ class AddAgentActivity : AppCompatActivity() {
         greeting.setAdapter(adapter)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val menuItemId = item.itemId
-        return when {
-            menuItemId == android.R.id.home -> {
-                navigateBack()
-                true
-            }
-            save() -> {
-                val intent = Intent(this, AgentDetailActivity::class.java)
-                intent.putExtra(AgentDetailActivity.ARG_ITEM_ID, binding.agent.id)
-                startActivity(intent)
-                true
-            }
-            else -> false
-        }
-    }
-
-    override fun onBackPressed() {
-        navigateBack()
-    }
-
     private fun navigateBack() {
         if (intent.getIntExtra(AGENCY_ID, -1) == -1) {
             val intent = Intent(this, MainActivity::class.java)
@@ -111,9 +116,18 @@ class AddAgentActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_add_agent, menu)
-        return true
+    private fun save(): Boolean {
+        return try {
+            val dao = DaoManager.createDao(getConnection(this), AgentModel::class.java)
+            dao.create(binding.agent)
+            dao.refresh(binding.agent)
+            Toast.makeText(this, getString(R.string.agent_saved, binding.agent.name), Toast.LENGTH_SHORT).show()
+            true
+        } catch (ex: SQLException) {
+            Toast.makeText(this, getString(R.string.error_saving_agent), Toast.LENGTH_LONG).show()
+            Log.e("agent", ex.message, ex)
+            false
+        }
     }
 
     fun onPickApplicationDate(view: View?) {
@@ -129,20 +143,6 @@ class AddAgentActivity : AppCompatActivity() {
         )
         datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
         datePickerDialog.show()
-    }
-
-    private fun save(): Boolean {
-        return try {
-            val dao = DaoManager.createDao(getConnection(this), AgentModel::class.java)
-            dao.create(binding.agent)
-            dao.refresh(binding.agent)
-            Toast.makeText(this, getString(R.string.agent_saved, binding.agent.name), Toast.LENGTH_SHORT).show()
-            true
-        } catch (ex: SQLException) {
-            Toast.makeText(this, getString(R.string.error_saving_agent), Toast.LENGTH_LONG).show()
-            Log.e("agent", ex.message, ex)
-            false
-        }
     }
 
     companion object {

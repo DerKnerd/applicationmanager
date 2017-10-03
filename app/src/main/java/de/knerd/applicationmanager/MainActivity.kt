@@ -43,6 +43,8 @@ class MainActivity : AppCompatActivity(), OnAgencyListFragmentInteractionListene
      */
     private var mViewPager: ViewPager? = null
 
+    private var selectedAgent: AgentModel? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -52,11 +54,21 @@ class MainActivity : AppCompatActivity(), OnAgencyListFragmentInteractionListene
         setupDatabase(this)
     }
 
-    private var selectedAgent: AgentModel? = null
-
     override fun onAgentListFragmentInteraction(item: AgentModel) {
         selectedAgent = item
         askForContactDetailsPermission()
+    }
+
+    override fun onAgencyListFragmentInteraction(item: AgencyModel) {
+        val intent = Intent(this, AgencyDetailActivity::class.java)
+        intent.putExtra(AgencyDetailActivity.ARG_ITEM_ID, item.id)
+        startActivity(intent)
+    }
+
+    override fun onApplicationListFragmentInteraction(item: ApplicationModel) {
+        val intent = Intent(this, ApplicationDetailActivity::class.java)
+        intent.putExtra(ApplicationDetailActivity.ARG_ITEM_ID, item.id)
+        startActivity(intent)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -71,25 +83,6 @@ class MainActivity : AppCompatActivity(), OnAgencyListFragmentInteractionListene
         } else {
             navigateToAgent(true)
         }
-    }
-
-    private fun navigateToAgent(allowed: Boolean) {
-        val intent = Intent(this, AgentDetailActivity::class.java)
-        intent.putExtra(AgentDetailActivity.ARG_ITEM_ID, selectedAgent!!.id)
-        intent.putExtra(AgentDetailActivity.ARG_CONTACT_DETAILS, allowed)
-        startActivity(intent)
-    }
-
-    override fun onAgencyListFragmentInteraction(item: AgencyModel) {
-        val intent = Intent(this, AgencyDetailActivity::class.java)
-        intent.putExtra(AgencyDetailActivity.ARG_ITEM_ID, item.id)
-        startActivity(intent)
-    }
-
-    override fun onApplicationListFragmentInteraction(item: ApplicationModel) {
-        val intent = Intent(this, ApplicationDetailActivity::class.java)
-        intent.putExtra(ApplicationDetailActivity.ARG_ITEM_ID, item.id)
-        startActivity(intent)
     }
 
     override fun onBackPressed() {
@@ -116,6 +109,13 @@ class MainActivity : AppCompatActivity(), OnAgencyListFragmentInteractionListene
         val tabLayout = findViewById(R.id.tabs) as TabLayout
         tabLayout.setupWithViewPager(mViewPager)
         tabLayout.addOnTabSelectedListener(TabChangedListener(mSectionsPagerAdapter, findViewById(R.id.fab) as FloatingActionButton, this))
+    }
+
+    private fun navigateToAgent(allowed: Boolean) {
+        val intent = Intent(this, AgentDetailActivity::class.java)
+        intent.putExtra(AgentDetailActivity.ARG_ITEM_ID, selectedAgent!!.id)
+        intent.putExtra(AgentDetailActivity.ARG_CONTACT_DETAILS, allowed)
+        startActivity(intent)
     }
 
     fun addEntry(view: View) {

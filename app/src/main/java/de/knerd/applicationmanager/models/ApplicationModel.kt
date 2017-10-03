@@ -17,6 +17,7 @@ class ApplicationModel : BaseObservable() {
             field = value
             notifyPropertyChanged(BR.agent)
         }
+
     @DatabaseField(canBeNull = false)
     @get:Bindable
     var companyName: String? = null
@@ -24,8 +25,10 @@ class ApplicationModel : BaseObservable() {
             field = value
             notifyPropertyChanged(BR.companyName)
         }
+
     @DatabaseField(generatedId = true)
     var id: Int = 0
+
     @DatabaseField(canBeNull = false)
     @get:Bindable
     var applicationDate: Date? = null
@@ -34,6 +37,7 @@ class ApplicationModel : BaseObservable() {
             notifyPropertyChanged(BR.applicationDate)
             notifyPropertyChanged(BR.applicationDateFormatted)
         }
+
     @DatabaseField(canBeNull = false)
     @get:Bindable
     var state: String? = null
@@ -41,6 +45,7 @@ class ApplicationModel : BaseObservable() {
             field = value
             notifyPropertyChanged(BR.state)
         }
+
     @get:Bindable
     val applicationDateFormatted: String
         get() {
