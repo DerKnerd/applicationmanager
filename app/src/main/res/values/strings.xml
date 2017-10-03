@@ -25,10 +25,10 @@
     <string name="application_agent">Agent</string>
     <string name="application_application_date">Application Date</string>
     <string name="application_state">State</string>
-    <string name="title_activity_application_detail">ApplicationDetailActivity</string>
     <string name="application_saved">Application %1$s saved</string>
     <string name="error_saving_application">Error saving application</string>
     <string name="edit_last_contact">Last contact</string>
     <string name="edit_state">Edit status</string>
-    <string name="call">call</string>
+    <string name="call">Call</string>
+    <string name="agent_phonenumber">Phone number</string>
 </resources>

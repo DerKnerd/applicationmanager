@@ -29,4 +29,6 @@
     <string name="error_saving_application">Fehler beim Speichern der Bewerbung</string>
     <string name="edit_last_contact">Letzter Kontakt</string>
     <string name="edit_state">Status bearbeiten</string>
+    <string name="agent_phonenumber">Telefonnummer</string>
+    <string name="call">Anrufen</string>
 </resources>

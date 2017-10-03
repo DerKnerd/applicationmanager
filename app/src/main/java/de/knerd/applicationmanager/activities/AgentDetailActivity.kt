@@ -2,7 +2,7 @@ package de.knerd.applicationmanager.activities
 
 import android.Manifest
 import android.app.DatePickerDialog
-import android.content.Context
+import android.content.ContentUris
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
@@ -16,7 +16,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.util.AttributeSet
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -59,97 +58,16 @@ class AgentDetailActivity : AppCompatActivity(), OnApplicationListFragmentIntera
      */
     private var mViewPager: ViewPager? = null
 
+    private var phoneNumber: String = ""
+
+    private val CALL_PHONE = 2
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setupBinding()
         setupToolbar()
-        setupPermissions()
+        setupContactDetails()
         setupTabs()
-        super.onCreate(savedInstanceState)
-    }
-
-    private fun setupPermissions() {
-        phoneEnabled = if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            false
-        } else {
-            setupContacts()
-            true
-        }
-    }
-
-    private var phoneEnabled: Boolean = false
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when {
-            grantResults[0] == PackageManager.PERMISSION_GRANTED -> setupContacts()
-            grantResults[1] == PackageManager.PERMISSION_GRANTED -> phoneEnabled = true
-            else -> phoneEnabled = false
-        }
-        setupTabs()
-    }
-
-    private fun setupContacts() {
-        val numberCursor = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " = ?", arrayOf(getAgent()!!.name), null)
-        numberCursor.use {
-            if (it != null) {
-                while (it.moveToNext()) {
-                    phoneNumber = it.getString(it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                }
-            }
-        }
-
-        val emailCursor = contentResolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " = ?", arrayOf(getAgent()!!.name), null)
-        emailCursor.use {
-            if (it != null) {
-                while (it.moveToNext()) {
-                    email = it.getString(it.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS))
-                }
-            }
-        }
-    }
-
-    lateinit var phoneNumber: String
-    lateinit var email: String
-
-    private fun setupBinding() {
-        val agent = getAgent()
-
-        binding = DataBindingUtil.setContentView<ActivityAgentDetailBinding>(this, R.layout.activity_agent_detail)
-        binding.agent = agent
-    }
-
-    private fun getAgent(): AgentModel? {
-        val agentDao = DaoManager.createDao(getConnection(this), AgentModel::class.java)
-        return agentDao.findLast { item -> item.id == intent.getIntExtra(ARG_ITEM_ID, -1) }
-    }
-
-    fun callAgent(view: View?) {
-        val intent = if (!phoneEnabled) {
-            Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null))
-        } else {
-            Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null))
-        }
-        startActivity(intent)
-
-    }
-
-    private fun setupTabs() {
-        mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
-        mSectionsPagerAdapter!!.addFragment(AgentDetailsFragment.newInstance(binding.agent, phoneNumber, email), getString(R.string.agent_detail_fragment_title), AddApplicationActivity::class.java)
-        mSectionsPagerAdapter!!.addFragment(ApplicationFragment.newInstance(ApplicationSource.Agent, binding.agent.id), getString(R.string.application_fragment_title), AddApplicationActivity::class.java)
-
-        mViewPager = findViewById(R.id.container) as ViewPager
-        mViewPager!!.adapter = mSectionsPagerAdapter
-
-        val tabLayout = findViewById(R.id.tabs) as TabLayout
-        tabLayout.setupWithViewPager(mViewPager)
-    }
-
-    private fun setupToolbar() {
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
-        setSupportActionBar(toolbar)
-
-        // Show the Up button in the action bar.
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -172,6 +90,98 @@ class AgentDetailActivity : AppCompatActivity(), OnApplicationListFragmentIntera
         }
     }
 
+    override fun onApplicationListFragmentInteraction(item: ApplicationModel) {
+        val intent = Intent(this, ApplicationDetailActivity::class.java)
+        intent.putExtra(ApplicationDetailActivity.ARG_ITEM_ID, item.id)
+        startActivity(intent)
+    }
+
+    override fun onBackPressed() {
+        navigateBack()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (grantResults.any()) {
+            when (requestCode) {
+                CALL_PHONE -> callAgent(grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            }
+        }
+    }
+
+    private fun setupBinding() {
+        val agent = getAgent()
+
+        binding = DataBindingUtil.setContentView<ActivityAgentDetailBinding>(this, R.layout.activity_agent_detail)
+        binding.agent = agent
+    }
+
+    private fun setupToolbar() {
+        val toolbar = findViewById(R.id.toolbar) as Toolbar
+        setSupportActionBar(toolbar)
+
+        // Show the Up button in the action bar.
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun setupTabs() {
+        mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
+        mSectionsPagerAdapter!!.addFragment(AgentDetailsFragment.newInstance(binding.agent, phoneNumber), getString(R.string.agent_detail_fragment_title), AddApplicationActivity::class.java)
+        mSectionsPagerAdapter!!.addFragment(ApplicationFragment.newInstance(ApplicationSource.Agent, binding.agent.id), getString(R.string.application_fragment_title), AddApplicationActivity::class.java)
+
+        mViewPager = findViewById(R.id.container) as ViewPager
+        mViewPager!!.adapter = mSectionsPagerAdapter
+
+        val tabLayout = findViewById(R.id.tabs) as TabLayout
+        tabLayout.setupWithViewPager(mViewPager)
+    }
+
+    private fun askForCallPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), CALL_PHONE)
+        } else {
+            callAgent(true)
+        }
+    }
+
+    private fun setupContactDetails() {
+        val allowed = intent.getBooleanExtra(ARG_CONTACT_DETAILS, false)
+        if (allowed) {
+            val numberCursor = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " = ?", arrayOf(getAgent()!!.name), null)
+            numberCursor.use {
+                if (it != null) {
+                    while (it.moveToNext() && phoneNumber == "") {
+                        phoneNumber = it.getString(it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                    }
+                }
+            }
+
+            var contactPhotoUri: Uri? = null
+            val pictureCursor = contentResolver.query(ContactsContract.Data.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?", arrayOf(getAgent()!!.name, ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE), null)
+            pictureCursor.use {
+                if (it != null) {
+                    while (it.moveToNext()) {
+                        contactPhotoUri = Uri.withAppendedPath(ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, it.getLong(it.getColumnIndex(ContactsContract.Data.CONTACT_ID))), ContactsContract.Contacts.Photo.DISPLAY_PHOTO)
+                    }
+                }
+            }
+            binding.contactPhoto = contactPhotoUri
+        }
+    }
+
+    private fun callAgent(call: Boolean) {
+        val intent = if (call) {
+            Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phoneNumber, null))
+        } else {
+            Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null))
+        }
+        startActivity(intent)
+    }
+
+    private fun getAgent(): AgentModel? {
+        val agentDao = DaoManager.createDao(getConnection(this), AgentModel::class.java)
+        return agentDao.findLast { item -> item.id == intent.getIntExtra(ARG_ITEM_ID, -1) }
+    }
+
     private fun changeLastContact() {
         val calendar = Calendar.getInstance()
         val datePickerDialog = DatePickerDialog(
@@ -190,20 +200,15 @@ class AgentDetailActivity : AppCompatActivity(), OnApplicationListFragmentIntera
         datePickerDialog.show()
     }
 
-    override fun onApplicationListFragmentInteraction(item: ApplicationModel) {
-        val intent = Intent(this, ApplicationDetailActivity::class.java)
-        intent.putExtra(ApplicationDetailActivity.ARG_ITEM_ID, item.id)
-        startActivity(intent)
-    }
-
-    override fun onBackPressed() {
-        navigateBack()
-    }
-
     private fun navigateBack() {
         val intent = Intent(this, AgencyDetailActivity::class.java)
         intent.putExtra(AgencyDetailActivity.ARG_ITEM_ID, binding.agent.agency!!.id)
         startActivity(intent)
+    }
+
+
+    fun callAgent(view: View?) {
+        askForCallPermission()
     }
 
     fun onFabClick(view: View) {
@@ -214,5 +219,6 @@ class AgentDetailActivity : AppCompatActivity(), OnApplicationListFragmentIntera
 
     companion object {
         val ARG_ITEM_ID = "item_id"
+        val ARG_CONTACT_DETAILS = "contact_data_allowed"
     }
 }

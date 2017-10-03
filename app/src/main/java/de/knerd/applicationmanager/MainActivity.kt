@@ -1,10 +1,14 @@
 package de.knerd.applicationmanager
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.TabLayout
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -48,9 +52,31 @@ class MainActivity : AppCompatActivity(), OnAgencyListFragmentInteractionListene
         setupDatabase(this)
     }
 
+    private var selectedAgent: AgentModel? = null
+
     override fun onAgentListFragmentInteraction(item: AgentModel) {
+        selectedAgent = item
+        askForContactDetailsPermission()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (grantResults.any()) {
+            navigateToAgent(grantResults[0] == PackageManager.PERMISSION_GRANTED)
+        }
+    }
+
+    private fun askForContactDetailsPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS), 1)
+        } else {
+            navigateToAgent(true)
+        }
+    }
+
+    private fun navigateToAgent(allowed: Boolean) {
         val intent = Intent(this, AgentDetailActivity::class.java)
-        intent.putExtra(AgentDetailActivity.ARG_ITEM_ID, item.id)
+        intent.putExtra(AgentDetailActivity.ARG_ITEM_ID, selectedAgent!!.id)
+        intent.putExtra(AgentDetailActivity.ARG_CONTACT_DETAILS, allowed)
         startActivity(intent)
     }
 
