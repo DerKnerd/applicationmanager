@@ -52,7 +52,7 @@ class AddApplicationActivity : AppCompatActivity() {
                 true
             }
             save() -> {
-                val intent = Intent(this, AgentDetailActivity::class.java)
+                val intent = Intent(this, ApplicationDetailActivity::class.java)
                 intent.putExtra(ApplicationDetailActivity.ARG_ITEM_ID, binding.application.id)
                 startActivity(intent)
                 true
