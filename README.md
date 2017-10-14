@@ -1,3 +1,5 @@
+![](https://api.travis-ci.org/DerKnerd/applicationmanager.svg) [![Coverage Status](https://coveralls.io/repos/github/DerKnerd/applicationmanager/badge.svg?branch=master)](https://coveralls.io/github/DerKnerd/applicationmanager?branch=master)
+
 # Application manager
 The application manager is a simple android app written by me to manage my job applications.
 
