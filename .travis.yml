@@ -1,4 +1,5 @@
 language: android
+script: chmod +X ./gradlew
 android:
   components:
     - tools
