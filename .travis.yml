@@ -1,6 +1,7 @@
 language: android
-before_install:
-  - chmod +X ./gradlew
+script:
+  - chmod +X gradlew
+  - gradlew build
 android:
   components:
     - tools
